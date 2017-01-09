@@ -7,42 +7,43 @@
 
 int main() {
 
-    // printf("%s\n", "Функция: (3 * exp(x) - 9 * x + 1) / (x^2 + 1)");
-    // printf("%s\n", "Введите два числа - начало и конец отрезка табулирования");
+    printf("%s\n", "Функция: (3 * exp(x) - 9 * x + 1) / (x^2 + 1 + sin(x) * sin(x))");
+    printf("%s\n", "Введите два числа - начало и конец отрезка табулирования");
 
     double x1, x2;
     scanf("%lf%lf", &x1, &x2);
 
-    // printf("%s\n", "Введите целое число - количество точек на отрезке табулирования");
+    printf("%s\n", "Введите целое число - количество точек на отрезке табулирования");
 
     int cnt_dot;
     scanf("%d", &cnt_dot);
 
-    // double* x_array = (double *)calloc(cnt_dot + 2, sizeof(int));
-    // double* y_array = (double *)calloc(cnt_dot + 2, sizeof(int));
+    double* x_array = (double *)calloc(cnt_dot + 2, sizeof(int));
+    double* y_array = (double *)calloc(cnt_dot + 2, sizeof(int));
 
-    // memset(x_array, 0, sizeof(x_array));
-    // memset(y_array, 0, sizeof(y_array));
     int num = 0;
 
-    double x;
     double y;
 
     double delta = (x2 - x1) / (cnt_dot + 1); 
 
-    #pragma acc kernels
-    for (double i = x1; i <= x2; i += delta) {
-        // x_array[num] = i;
-        // y_array[num] = (3 * exp(i) - 9 * i + 1) / (i * i + 1 + sin(i)*sin(i));
-        y = (3 * exp(i) - 9 * i + 1) / (i * i + 1 + sin(i)*sin(i));
-        if (num % ((int)(cnt_dot / 20)) == 0) {
-            // printf("Iteration: %d, x = %lf, f(x) = %lf\n", num, i, y);
+#pragma acc kernels
+    for (int i = 0; i < cnt_dot + 2; ++i) {
+        y_array[i] = (3 * exp(x1 + delta * i) - 9 * (x1 + delta * i) + 1) / 
+                    ((x1 + delta * i) * (x1 + delta * i) + 1 + sin(x1 + delta * i)*sin(x1 + delta * i));
+
+        num += 1;        
+    }
+
+    num = 0;
+    for (double x = x1; x <= x2; x += delta) {
+        if (num % ((int)(cnt_dot / 8)) == 0) {
+            printf("Iteration: %d, x = %lf, f(x) = %lf\n", num, x, y_array[num]);
         }
         num += 1;
     }
 
     printf("%lf\n", clock()/1000.0);
-    // free(x_array);
-    // free(y_array);
-    
+
+    free(y_array); 
 }
