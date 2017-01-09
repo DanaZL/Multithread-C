@@ -1,5 +1,5 @@
 # Multithread-C
-Multithread programming C / C ++ (Technosphere, 2 semester)
+Multithread programming C/C++ (Technosphere, 2 semester)
 
 p1 - Allocator
 p2 - Chat (epol & pol)
