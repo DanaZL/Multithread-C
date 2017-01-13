@@ -5,4 +5,5 @@ Multithread programming C/C++ (Technosphere, 2 semester)
 ----------------|----------------------
 p1              | Allocator
 p2              | Chat (epol & pol)
+p10             | MPI
 p11             | GPU computing (OpenACC)
