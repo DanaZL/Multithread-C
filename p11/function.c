@@ -18,32 +18,30 @@ int main() {
     int cnt_dot;
     scanf("%d", &cnt_dot);
 
-    double* x_array = (double *)calloc(cnt_dot + 2, sizeof(int));
-    double* y_array = (double *)calloc(cnt_dot + 2, sizeof(int));
+    double* y_array = (double *)calloc(cnt_dot + 2, sizeof(double));
 
     int num = 0;
-
-    double y;
-
     double delta = (x2 - x1) / (cnt_dot + 1); 
+
+    double start_time = clock(); 
 
 #pragma acc kernels
     for (int i = 0; i < cnt_dot + 2; ++i) {
         y_array[i] = (3 * exp(x1 + delta * i) - 9 * (x1 + delta * i) + 1) / 
-                    ((x1 + delta * i) * (x1 + delta * i) + 1 + sin(x1 + delta * i)*sin(x1 + delta * i));
+                    ((x1 + delta * i) * (x1 + delta * i) + 1 + sin(x1 + delta * i) * sin(x1 + delta * i));
 
         num += 1;        
     }
 
     num = 0;
     for (double x = x1; x <= x2; x += delta) {
-        if (num % ((int)(cnt_dot / 8)) == 0) {
+        if (num % ((int)(cnt_dot / 6)) == 0) {
             printf("Iteration: %d, x = %lf, f(x) = %lf\n", num, x, y_array[num]);
         }
         num += 1;
     }
 
-    printf("%lf\n", clock()/1000.0);
+    printf("Time: %lf\n", (clock() - start_time) / 1000.0);
 
     free(y_array); 
 }
