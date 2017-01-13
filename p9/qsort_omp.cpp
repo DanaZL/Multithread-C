@@ -18,7 +18,7 @@ int sort(int* arr, long long left_idx, long long right_idx, int threads_cnt)
     int main_elem = arr[right_idx];
     int less_n = 0, greater_n = 0;
 
-    for(i = left_idx; i < right_idx; i++) {
+    for (i = left_idx; i < right_idx; i++) {
         if (arr[i] < main_elem) {
             less_elems[less_n] = arr[i];
             less_n++;
