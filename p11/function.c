@@ -20,7 +20,7 @@ int main() {
 
     double* y_array = (double *)calloc(cnt_dot + 2, sizeof(double));
 
-    int num = 0;
+    int num;
     double delta = (x2 - x1) / (cnt_dot + 1); 
 
     double start_time = clock(); 
@@ -28,9 +28,7 @@ int main() {
 #pragma acc kernels
     for (int i = 0; i < cnt_dot + 2; ++i) {
         y_array[i] = (3 * exp(x1 + delta * i) - 9 * (x1 + delta * i) + 1) / 
-                    ((x1 + delta * i) * (x1 + delta * i) + 1 + sin(x1 + delta * i) * sin(x1 + delta * i));
-
-        num += 1;        
+                    ((x1 + delta * i) * (x1 + delta * i) + 1 + sin(x1 + delta * i) * sin(x1 + delta * i));     
     }
 
     num = 0;
